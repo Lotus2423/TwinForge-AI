@@ -1,170 +1,262 @@
 <div align="center">
 
-# 🚀 TwinForge AI
+# ⚙️ TwinForge AI
 
-### AI-Powered Predictive Maintenance & Digital Twin Platform for Industry 4.0
+### Building the Future of Intelligent Industrial Maintenance
 
-Predict failures before they happen.
+An Industry 4.0 platform that creates intelligent Digital Twins of industrial machines and predicts failures before they happen using Explainable Artificial Intelligence.
 
-Turn industrial data into intelligent decisions.
+---
 
-
+![Status](https://img.shields.io/badge/Status-Under%20Development-blue)
+![Version](https://img.shields.io/badge/Version-v1.0-success)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-61DAFB)
+![Backend](https://img.shields.io/badge/Backend-FastAPI-009688)
+![AI](https://img.shields.io/badge/AI-Python-orange)
+![Digital Twin](https://img.shields.io/badge/Digital%20Twin-Three.js-purple)
 
 </div>
 
 ---
 
-# 🌍 About
+# 📖 Overview
 
-TwinForge AI is an Industry 4.0 platform that combines Artificial Intelligence, IoT, Digital Twins and Real-Time Monitoring to predict industrial machine failures before they happen.
+TwinForge AI is a next-generation Industry 4.0 platform that combines Mechanical Engineering, IoT, Artificial Intelligence, Cloud Computing, and Digital Twin technology into one intelligent industrial ecosystem.
 
-Instead of waiting for a machine to fail, TwinForge AI continuously monitors sensor data and warns maintenance teams in advance.
+Instead of reacting to machine failures after they occur, TwinForge AI predicts failures in advance, explains why they are likely to happen, and recommends the best maintenance action.
 
----
-
-# 🎯 Vision
-
-Build the future of intelligent manufacturing by creating an affordable Digital Twin platform for every factory.
+The long-term vision is to build an affordable predictive maintenance platform for small and medium manufacturing industries.
 
 ---
 
-# ⚡ Key Features
+# 🚀 Vision
 
-✅ Predictive Maintenance
-
-✅ Digital Twin Dashboard
-
-✅ AI Factory Assistant
-
-✅ Live Sensor Monitoring
-
-✅ ESP32 IoT Integration
-
-✅ Machine Health Score
-
-✅ Real-time Alerts
-
-✅ Energy Monitoring
-
-✅ Maintenance Scheduling
-
-✅ Historical Analytics
+Create intelligent Digital Twins for industrial machines that continuously learn from sensor data and help factories prevent failures before they happen.
 
 ---
 
-# 🏭 System Architecture
+# 🎯 Mission
 
-```text
-                   Factory
-
-                      │
-
-                Industrial Machine
-
-                      │
-
-       ┌──────────────┴──────────────┐
-
- Temperature   Vibration   Current   RPM
-
-       │             │         │      │
-
-       └──────────────┬──────────────┘
-
-                  ESP32 Gateway
-
-                      │
-
-                  WiFi / MQTT
-
-                      │
-
-                 FastAPI Backend
-
-                      │
-
-        ┌─────────────┴──────────────┐
-
-        │                            │
-
- Prediction AI             Factory Assistant AI
-
-        │                            │
-
- Maintenance AI              Energy AI
-
-        │                            │
-
-        └─────────────┬──────────────┘
-
-                      │
-
-            Digital Twin Dashboard
-
-```
+- Reduce machine downtime
+- Reduce maintenance cost
+- Increase equipment lifespan
+- Improve factory productivity
+- Enable explainable AI-driven maintenance
+- Make Industry 4.0 accessible for every factory
 
 ---
 
-# 🤖 AI Agents
+# ❌ We Are NOT Building
 
-## 🧠 Prediction AI
-
-Predicts machine failures before they occur.
-
----
-
-## 💬 Factory Assistant AI
-
-Answers questions like:
-
-> Why is Machine-01 in warning?
+- A temperature monitoring app
+- A simple IoT dashboard
+- A college demonstration project
+- A basic machine learning model
 
 ---
 
-## 🔧 Maintenance AI
+# ✅ We ARE Building
 
-Creates maintenance schedules automatically.
-
-Example:
-
-Motor-01 should be serviced within the next 5 days.
-
----
-
-## ⚡ Energy AI
-
-Analyzes power consumption and identifies energy waste.
+- Industrial Intelligence Platform
+- Digital Twin Platform
+- AI Maintenance Assistant
+- Predictive Maintenance System
+- Future Industrial SaaS Platform
 
 ---
 
-## 🏭 Digital Twin AI
+# 🏭 First Machine
 
-Updates the 3D machine model in real time based on sensor data.
+Three Phase Induction Motor
+
+Why?
+
+- Used in almost every industry
+- Easy to monitor
+- Rich engineering knowledge
+- Excellent for predictive maintenance
+- Large amount of available research
+
+Future machines include:
+
+- Pumps
+- Compressors
+- CNC Machines
+- Gearboxes
+- Conveyor Systems
+- Industrial Robots
 
 ---
 
-# 📡 Sensors
+# 🔍 Core Features
 
-| Sensor | Purpose |
-|---------|----------|
-| Temperature | Overheating Detection |
-| Vibration | Bearing Failure |
-| Current | Motor Load |
-| RPM | Shaft Speed |
-| Voltage | Power Monitoring |
+### ✅ Live Sensor Monitoring
+
+- Temperature
+- Vibration
+- Current
+- RPM
 
 ---
 
-# 🛠 Tech Stack
+### 🤖 Explainable AI
+
+Instead of saying
+
+Temperature = 82°C
+
+TwinForge AI explains
+
+Temperature has increased continuously for six days.
+
+Bearing vibration increased by 42%.
+
+The observed pattern matches historical bearing wear.
+
+Failure Probability
+
+91%
+
+Remaining Useful Life
+
+5 Days
+
+Recommended Action
+
+Inspect the bearing immediately.
+
+---
+
+### 🏭 Digital Twin
+
+Every physical machine has a living digital representation.
+
+The Digital Twin contains
+
+- Health
+- Sensor values
+- Operating history
+- Maintenance history
+- AI predictions
+- Component status
+
+---
+
+### 💬 Factory Assistant
+
+Industrial AI Assistant capable of answering questions like
+
+- Why is Machine-01 unhealthy?
+- What caused today's alert?
+- Which machine needs maintenance first?
+- How much downtime can be prevented?
+
+---
+
+### 📈 Predictive Maintenance
+
+The system predicts
+
+- Bearing Wear
+- Rotor Damage
+- Stator Overheating
+- Cooling Fan Failure
+- Shaft Misalignment
+- Loose Mounting
+- Electrical Faults
+
+---
+
+# 🧠 AI Architecture
+
+Raw Sensor Data
+
+↓
+
+Data Validation
+
+↓
+
+Feature Engineering
+
+↓
+
+Prediction AI
+
+↓
+
+Reasoning Engine
+
+↓
+
+Factory Assistant
+
+↓
+
+Maintenance Recommendation
+
+↓
+
+Dashboard
+
+---
+
+# 🏗 High-Level Architecture
+
+Industrial Machine
+
+↓
+
+Sensors
+
+↓
+
+ESP32 Edge Device
+
+↓
+
+Backend API
+
+↓
+
+Database
+
+↓
+
+Prediction AI
+
+↓
+
+Factory Assistant
+
+↓
+
+WebSocket
+
+↓
+
+Dashboard
+
+↓
+
+Digital Twin
+
+---
+
+# 💻 Technology Stack
 
 ## Frontend
 
 - React
 - TypeScript
 - Vite
+- TailwindCSS
+- React Router
+- React Query
 - Three.js
 - React Three Fiber
-- Tailwind CSS
+- Recharts
 
 ---
 
@@ -172,26 +264,24 @@ Updates the 3D machine model in real time based on sensor data.
 
 - FastAPI
 - Python
+- SQLAlchemy
+- PostgreSQL
 - WebSockets
 
 ---
 
-## AI
+## Artificial Intelligence
 
+- Python
+- Pandas
+- NumPy
 - Scikit-Learn
 - TensorFlow
-- XGBoost
-- LLM
+- PyTorch
 
 ---
 
-## Database
-
-- PostgreSQL
-
----
-
-## IoT
+## Hardware
 
 - ESP32
 - MQTT
@@ -199,138 +289,135 @@ Updates the 3D machine model in real time based on sensor data.
 
 ---
 
-# 📂 Project Structure
+## Infrastructure
+
+- Docker
+- GitHub Actions
+- Nginx
+
+---
+
+# 📂 Repository Structure
 
 ```text
-TwinForge-AI
+TwinForge-AI/
 
-├── frontend
-├── backend
-├── docs
-├── hardware
-├── datasets
-├── digital-twin
-├── README.md
-├── LICENSE
-└── docker-compose.yml
+docs/
+frontend/
+backend/
+ai/
+edge/
+digital-twin/
+datasets/
+tests/
+scripts/
+infrastructure/
+assets/
 ```
 
 ---
 
-# 📊 Roadmap
+# 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| Project Overview | High-level project introduction |
+| Project Bible | Vision and philosophy |
+| System Architecture | Technical blueprint |
+| Mechanical Engineering | Machine knowledge |
+| Failure Analysis | Failure mechanisms |
+| Database Design | ER diagrams |
+| API Specification | REST APIs |
+| AI Architecture | AI pipeline |
+| Digital Twin | Digital twin architecture |
+| UI System | Dashboard design |
+
+---
+
+# 🛣 Roadmap
 
 ## Phase 1
 
-- [x] Documentation
-- [x] GitHub Repository
-- [x] Project Planning
-
----
+Documentation
 
 ## Phase 2
 
-- [ ] React Dashboard
-
-- [ ] Authentication
-
-- [ ] Machine Cards
-
----
+Frontend
 
 ## Phase 3
 
-- [ ] FastAPI Backend
-
-- [ ] Database
-
-- [ ] APIs
-
----
+Backend
 
 ## Phase 4
 
-- [ ] ESP32 Integration
-
-- [ ] Live Sensor Data
-
----
+Database
 
 ## Phase 5
 
-- [ ] AI Prediction
-
-- [ ] Factory Assistant
-
----
+ESP32
 
 ## Phase 6
 
-- [ ] Digital Twin
-
-- [ ] Real-time Animation
-
----
+Prediction AI
 
 ## Phase 7
 
-- [ ] Industry 4.0 Platform
+Factory Assistant
 
----
-
-# 📸 Preview
-
-Coming Soon...
-
-Dashboard
-
-AI Assistant
+## Phase 8
 
 Digital Twin
 
-Analytics
+## Phase 9
+
+Testing
+
+## Phase 10
+
+Deployment
 
 ---
 
-# 📈 Current Status
+# 🎯 Long-Term Vision
 
-🟢 Planning
+TwinForge AI aims to become an affordable alternative to enterprise Industry 4.0 platforms while focusing on explainable AI, Digital Twins, and predictive maintenance.
 
-🟢 Documentation
+Future capabilities include
 
-🟢 Frontend Started
-
-🟡 Backend Development
-
-⚪ AI Training
-
-⚪ Hardware Integration
+- Multi-factory management
+- Energy optimization
+- Maintenance scheduling
+- Industrial analytics
+- AI Agents
+- Edge AI
+- Cloud deployment
 
 ---
 
 # 🤝 Contributing
 
-Contributions are welcome.
+Contributions, ideas, architecture suggestions, and research are welcome.
 
-Feel free to fork this repository and submit a Pull Request.
+Please read
+
+CONTRIBUTING.md
+
+before submitting pull requests.
 
 ---
 
-# 👨‍💻 Developer
+# 📜 License
 
-## Lotus 
-
-Mechanical Engineering Student
-
-AI • Digital Twin • IoT • Robotics • Full Stack Development
-
-Building real-world engineering solutions with AI.
+This project is released under the MIT License.
 
 ---
 
 <div align="center">
 
-## ⭐ If you like this project, don't forget to Star this repository.
+## ⭐ TwinForge AI
 
-Made with ❤️ by Lotus 
+**Building the Future of Intelligent Industrial Maintenance**
+
+Made with ❤️ using Mechanical Engineering, Artificial Intelligence, IoT, and Digital Twin Technology.
 
 </div>
