@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0b0d;
+    --surface:#111318;
+    --surface2:#181c23;
+    --border:#1e2330;
+    --border2:#2a3040;
+    --text:#e8eaf0;
+    --text2:#8892a4;
+    --text3:#4a5568;
+    --accent:#3b82f6;
+    --accent-dim:#1d3a6b;
+    --green:#10b981;
+    --green-dim:#052e1c;
+    --amber:#f59e0b;
+    --amber-dim:#2d1f00;
+    --red:#ef4444;
+    --red-dim:#2d0e0e;
+    --purple:#8b5cf6;
+    --purple-dim:#1e1040;
+    --font:'Inter',system-ui,sans-serif;
+  }
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.5;min-height:100vh}
+
+  .shell{display:grid;grid-template-columns:220px 1fr;grid-template-rows:48px 1fr;min-height:100vh}
+
+  /* ── TOPBAR ── */
+  .topbar{grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px}
+  .logo{display:flex;align-items:center;gap:8px;margin-right:auto}
+  .logo-mark{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center}
+  .logo-mark svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2}
+  .logo-name{font-size:14px;font-weight:600;letter-spacing:-.3px}
+  .logo-tag{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+  .topbar-badge{font-size:11px;padding:3px 8px;border-radius:4px;background:var(--green-dim);color:var(--green);border:1px solid #10b98130;font-weight:500}
+  .topbar-time{font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums}
+  .topbar-avatar{width:28px;height:28px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--accent)}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:16px 12px;display:flex;flex-direction:column;gap:2px}
+  .nav-section{font-size:10px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;padding:12px 8px 6px;margin-top:8px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--text2);font-size:13px;transition:all .15s;border:1px solid transparent;position:relative}
+  .nav-item:hover{background:var(--surface2);color:var(--text)}
+  .nav-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-dim)}
+  .nav-item svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
+  .nav-item.active svg{opacity:1}
+  .nav-dot{width:6px;height:6px;border-radius:50%;margin-left:auto;flex-shrink:0}
+  .nav-dot.red{background:var(--red)}
+  .nav-dot.amber{background:var(--amber)}
+  .sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
+
+  /* ── MAIN ── */
+  .main{background:var(--bg);padding:24px;overflow:auto}
+  .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+  .page-title{font-size:20px;font-weight:600;letter-spacing:-.4px}
+  .page-sub{font-size:13px;color:var(--text3);margin-top:2px}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text);transition:all .15s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:#2563eb}
+
+  /* ── KPI ROW ── */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden}
+  .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+  .kpi.green::before{background:var(--green)}
+  .kpi.amber::before{background:var(--amber)}
+  .kpi.red::before{background:var(--red)}
+  .kpi.purple::before{background:var(--purple)}
+  .kpi-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+  .kpi-value{font-size:28px;font-weight:700;letter-spacing:-.8px;font-variant-numeric:tabular-nums}
+  .kpi-value.green{color:var(--green)}
+  .kpi-value.amber{color:var(--amber)}
+  .kpi-value.red{color:var(--red)}
+  .kpi-value.purple{color:var(--purple)}
+  .kpi-delta{font-size:11px;color:var(--text3);margin-top:4px}
+  .kpi-delta span{color:var(--green);font-weight:500}
+  .kpi-delta span.down{color:var(--red)}
+
+  /* ── GRID ── */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .grid3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+
+  /* ── CARD ── */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .card-head{padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .card-title{font-size:13px;font-weight:600}
+  .card-sub{font-size:11px;color:var(--text3);margin-top:1px}
+  .card-body{padding:16px}
+  .card-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500}
+  .card-tag.live{background:#10b98120;color:var(--green);border:1px solid #10b98130}
+  .card-tag.warn{background:#f59e0b20;color:var(--amber);border:1px solid #f59e0b30}
+
+  /* ── SENSOR GRID ── */
+  .sensor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sensor-item{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px}
+  .sensor-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .sensor-val{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+  .sensor-val.warn{color:var(--amber)}
+  .sensor-val.ok{color:var(--text)}
+  .sensor-unit{font-size:11px;color:var(--text3);font-weight:400;margin-left:2px}
+  .sensor-bar{height:3px;background:var(--border2);border-radius:2px;margin-top:8px;overflow:hidden}
+  .sensor-bar-fill{height:100%;border-radius:2px;transition:width .3s}
+
+  /* ── HEALTH RING ── */
+  .health-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px}
+  .ring-wrap{position:relative;width:110px;height:110px;margin-bottom:16px}
+  .ring-wrap svg{transform:rotate(-90deg)}
+  .ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring-pct{font-size:26px;font-weight:700;color:var(--amber)}
+  .ring-txt{font-size:10px;color:var(--text3);letter-spacing:.3px}
+  .health-status{font-size:12px;font-weight:600;color:var(--amber);padding:4px 12px;border-radius:20px;background:var(--amber-dim);border:1px solid #f59e0b30;margin-bottom:12px}
+  .health-stats{width:100%;display:flex;flex-direction:column;gap:8px}
+  .hstat{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+  .hstat-label{color:var(--text3)}
+  .hstat-val{font-weight:600}
+  .hstat-val.red{color:var(--red)}
+  .hstat-val.amber{color:var(--amber)}
+  .hstat-val.green{color:var(--green)}
+
+  /* ── MACHINE LIST ── */
+  .machine-list{display:flex;flex-direction:column;gap:0}
+  .machine-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+  .machine-row:last-child{border-bottom:none}
+  .machine-row:hover{background:var(--surface2)}
+  .machine-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .machine-name{font-size:13px;font-weight:500;flex:1}
+  .machine-loc{font-size:11px;color:var(--text3)}
+  .machine-score{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;min-width:36px;text-align:right}
+  .machine-alert{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
+  .machine-alert.warn{background:var(--amber-dim);color:var(--amber);border:1px solid #f59e0b25}
+  .machine-alert.ok{background:var(--green-dim);color:var(--green);border:1px solid #10b98125}
+  .machine-alert.crit{background:var(--red-dim);color:var(--red);border:1px solid #ef444425}
+
+  /* ── MINI CHART ── */
+  .chart-area{padding:0 16px 16px}
+
+  /* ── AI PANEL ── */
+  .ai-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px}
+  .ai-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+  .ai-icon{width:28px;height:28px;border-radius:6px;background:var(--purple-dim);border:1px solid var(--purple);display:flex;align-items:center;justify-content:center}
+  .ai-icon svg{width:14px;height:14px;stroke:var(--purple);fill:none;stroke-width:2}
+  .ai-title{font-size:13px;font-weight:600}
+  .ai-subtitle{font-size:11px;color:var(--text3)}
+  .ai-messages{padding:16px;display:flex;flex-direction:column;gap:12px}
+  .ai-msg{display:flex;flex-direction:column;gap:4px}
+  .ai-msg-who{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px}
+  .ai-bubble{padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.6}
+  .ai-bubble.user{background:var(--surface2);border:1px solid var(--border2);color:var(--text2)}
+  .ai-bubble.ai{background:var(--purple-dim);border:1px solid #8b5cf630;color:var(--text)}
+  .ai-highlight{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--amber)}
+  .ai-stat{display:inline-block;background:#1a1424;border:1px solid #8b5cf630;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;color:var(--purple);margin:2px 1px}
+  .ai-input-row{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+  .ai-input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:8px 12px;color:var(--text);font-size:12px;outline:none}
+  .ai-input:focus{border-color:var(--purple)}
+  .ai-send{padding:7px 12px;background:var(--purple);border:none;border-radius:6px;color:#fff;font-size:12px;cursor:pointer;font-weight:500}
+
+  /* ── ALERT STRIP ── */
+  .alert-strip{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--red-dim);border:1px solid #ef444430;border-radius:8px;margin-bottom:16px}
+  .alert-icon{width:18px;height:18px;flex-shrink:0;stroke:var(--red);fill:none;stroke-width:2;margin-top:1px}
+  .alert-text{font-size:12px;color:var(--text2)}
+  .alert-text strong{color:var(--red);font-weight:600}
+  .alert-time{font-size:11px;color:var(--text3);margin-left:auto;flex-shrink:0}
+
+  /* ── SPARKLINE ── */
+  .sparkline{padding:0 16px 14px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 14 14"><path d="M2 7h3M9 7h3M7 2v3M7 9v3" stroke-linecap="round"/><circle cx="7" cy="7" r="2"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">TwinForge</div>
+        <div class="logo-tag">Industry 4.0 Platform</div>
+      </div>
+    </div>
+    <div class="topbar-badge">● Live</div>
+    <div class="topbar-time">Mon 21 Jul 2026 · 14:32:07</div>
+    <div class="topbar-avatar">AK</div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div style="font-size:10px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;padding:4px 8px 10px">Overview</div>
+
+    <div class="nav-item active">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="9" y="1" width="5" height="5" rx="1"/><rect x="1" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><rect x="2" y="3" width="11" height="9" rx="1.5"/><path d="M5 3V2M10 3V2"/></svg>
+      Machines
+      <span class="nav-dot red"></span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M1 11L5 7l3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Sensor Monitor
+    </div>
+
+    <div class="nav-section">Intelligence</div>
+
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><circle cx="7.5" cy="7.5" r="5.5"/><path d="M7.5 5v3l2 1.5" stroke-linecap="round"/></svg>
+      Predictions
+      <span class="nav-dot amber"></span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M2 12l3-3 2 2 3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 4h13" stroke-linecap="round"/></svg>
+      Analytics
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="3.5"/></svg>
+      Digital Twin
+    </div>
+
+    <div class="nav-section">Operations</div>
+
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M2 4h11M2 8h8M2 12h5" stroke-linecap="round"/></svg>
+      Maintenance
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M7.5 2L13 11H2L7.5 2z" stroke-linejoin="round"/><path d="M7.5 6v3M7.5 10.5v.5" stroke-linecap="round"/></svg>
+      Alerts
+      <span class="nav-dot red"></span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M2 10.5l3-5 3 3.5 2-2.5 3 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Energy
+    </div>
+
+    <div class="nav-section">AI</div>
+
+    <div class="nav-item">
+      <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M2 11V5a1 1 0 011-1h9a1 1 0 011 1v6" stroke-linecap="round"/><path d="M1 11h13M5 11V7h5v4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Factory Assistant
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="nav-item">
+        <svg viewBox="0 0 15 15" stroke="currentColor" fill="none" stroke-width="1.5"><circle cx="7.5" cy="5.5" r="2.5"/><path d="M2 13c0-3 2.5-4.5 5.5-4.5S13 10 13 13" stroke-linecap="round"/></svg>
+        Arjun K.
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <div class="page-title">Plant Overview</div>
+        <div class="page-sub">Unit 3 · Sector B · Last sync 12s ago</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn">Export report</button>
+        <button class="btn primary">+ Add machine</button>
+      </div>
+    </div>
+
+    <!-- ACTIVE ALERT -->
+    <div class="alert-strip">
+      <svg class="alert-icon" viewBox="0 0 18 18"><path d="M9 3L15 15H3L9 3z" stroke-linejoin="round"/><path d="M9 7v4M9 12.5v.5" stroke-linecap="round"/></svg>
+      <div class="alert-text"><strong>Motor-01 bearing failure risk 91%</strong> — Vibration increased 42% over 7 days. Immediate inspection recommended before Friday shift.</div>
+      <div class="alert-time">14:28</div>
+    </div>
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi green">
+        <div class="kpi-label">Machines online</div>
+        <div class="kpi-value green">7<span style="font-size:16px;color:var(--text3)">/8</span></div>
+        <div class="kpi-delta"><span>87.5%</span> availability</div>
+      </div>
+      <div class="kpi amber">
+        <div class="kpi-label">Active warnings</div>
+        <div class="kpi-value amber">3</div>
+        <div class="kpi-delta"><span class="down">+2</span> since yesterday</div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">Critical alerts</div>
+        <div class="kpi-value red">1</div>
+        <div class="kpi-delta">Motor-01 · Bearing</div>
+      </div>
+      <div class="kpi purple">
+        <div class="kpi-label">Avg fleet health</div>
+        <div class="kpi-value purple">74%</div>
+        <div class="kpi-delta"><span class="down">-6%</span> this week</div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="grid3">
+
+      <!-- LEFT: MOTOR DETAIL -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <!-- Sensor readings -->
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Motor-01 · Live sensors</div>
+              <div class="card-sub">3-Phase Induction Motor · Bay 3</div>
+            </div>
+            <span class="card-tag live">Live</span>
+          </div>
+          <div class="card-body">
+            <div class="sensor-grid">
+              <div class="sensor-item">
+                <div class="sensor-label">Temperature</div>
+                <div class="sensor-val warn">78<span class="sensor-unit">°C</span></div>
+                <div style="font-size:10px;color:var(--amber);margin-top:4px">↑ +12°C this week</div>
+                <div class="sensor-bar"><div class="sensor-bar-fill" style="width:78%;background:var(--amber)"></div></div>
+              </div>
+              <div class="sensor-item">
+                <div class="sensor-label">Vibration</div>
+                <div class="sensor-val warn">7.4<span class="sensor-unit">mm/s</span></div>
+                <div style="font-size:10px;color:var(--red);margin-top:4px">↑ +42% this week</div>
+                <div class="sensor-bar"><div class="sensor-bar-fill" style="width:74%;background:var(--red)"></div></div>
+              </div>
+              <div class="sensor-item">
+                <div class="sensor-label">Current draw</div>
+                <div class="sensor-val ok">38.2<span class="sensor-unit">A</span></div>
+                <div style="font-size:10px;color:var(--text3);margin-top:4px">Normal range</div>
+                <div class="sensor-bar"><div class="sensor-bar-fill" style="width:55%;background:var(--green)"></div></div>
+              </div>
+              <div class="sensor-item">
+                <div class="sensor-label">RPM</div>
+                <div class="sensor-val ok">1,482<span class="sensor-unit">rpm</span></div>
+                <div style="font-size:10px;color:var(--text3);margin-top:4px">Nominal 1,500</div>
+                <div class="sensor-bar"><div class="sensor-bar-fill" style="width:98%;background:var(--green)"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini sparkline -->
+          <div class="sparkline">
+            <div style="font-size:10px;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Vibration trend — 7 days</div>
+            <svg width="100%" height="52" viewBox="0 0 460 52">
+              <defs>
+                <linearGradient id="vg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ef4444" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 44 L65 42 L130 39 L195 34 L260 28 L325 20 L390 12 L460 4" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+              <path d="M0 44 L65 42 L130 39 L195 34 L260 28 L325 20 L390 12 L460 4 L460 52 L0 52Z" fill="url(#vg)"/>
+              <circle cx="460" cy="4" r="4" fill="#ef4444"/>
+              <text x="440" y="18" font-size="10" fill="#ef4444" text-anchor="middle">7.4</text>
+              <text x="10" y="48" font-size="9" fill="#4a5568">Mon</text>
+              <text x="75" y="48" font-size="9" fill="#4a5568">Tue</text>
+              <text x="140" y="48" font-size="9" fill="#4a5568">Wed</text>
+              <text x="205" y="48" font-size="9" fill="#4a5568">Thu</text>
+              <text x="270" y="48" font-size="9" fill="#4a5568">Fri</text>
+              <text x="335" y="48" font-size="9" fill="#4a5568">Sat</text>
+              <text x="400" y="48" font-size="9" fill="#4a5568">Sun</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Machine fleet -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">All machines</div>
+            <span class="card-tag live">8 registered</span>
+          </div>
+          <div class="machine-list">
+            <div class="machine-row">
+              <div class="machine-dot" style="background:var(--red)"></div>
+              <div><div class="machine-name">Motor-01</div><div class="machine-loc">Bay 3 · Induction</div></div>
+              <div class="machine-score" style="color:var(--red)">34%</div>
+              <span class="machine-alert crit">Critical</span>
+            </div>
+            <div class="machine-row">
+              <div class="machine-dot" style="background:var(--amber)"></div>
+              <div><div class="machine-name">Pump-02</div><div class="machine-loc">Bay 1 · Centrifugal</div></div>
+              <div class="machine-score" style="color:var(--amber)">61%</div>
+              <span class="machine-alert warn">Warning</span>
+            </div>
+            <div class="machine-row">
+              <div class="machine-dot" style="background:var(--amber)"></div>
+              <div><div class="machine-name">Compressor-01</div><div class="machine-loc">Bay 5 · Rotary</div></div>
+              <div class="machine-score" style="color:var(--amber)">68%</div>
+              <span class="machine-alert warn">Warning</span>
+            </div>
+            <div class="machine-row">
+              <div class="machine-dot" style="background:var(--green)"></div>
+              <div><div class="machine-name">Motor-03</div><div class="machine-loc">Bay 2 · Induction</div></div>
+              <div class="machine-score" style="color:var(--green)">91%</div>
+              <span class="machine-alert ok">Healthy</span>
+            </div>
+            <div class="machine-row">
+              <div class="machine-dot" style="background:var(--green)"></div>
+              <div><div class="machine-name">Fan-01</div><div class="machine-loc">Bay 4 · Axial</div></div>
+              <div class="machine-score" style="color:var(--green)">88%</div>
+              <span class="machine-alert ok">Healthy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: HEALTH + AI -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <!-- Health ring -->
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Motor-01 health</div>
+              <div class="card-sub">AI Prediction Engine</div>
+            </div>
+            <span class="card-tag warn">Warning</span>
+          </div>
+          <div class="health-center">
+            <div class="ring-wrap">
+              <svg width="110" height="110" viewBox="0 0 110 110">
+                <circle cx="55" cy="55" r="46" fill="none" stroke="#1e2330" stroke-width="10"/>
+                <circle cx="55" cy="55" r="46" fill="none" stroke="#f59e0b" stroke-width="10"
+                  stroke-dasharray="289" stroke-dashoffset="193" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-label">
+                <div class="ring-pct">34%</div>
+                <div class="ring-txt">health</div>
+              </div>
+            </div>
+            <div class="health-status">⚠ High risk</div>
+            <div class="health-stats">
+              <div class="hstat">
+                <span class="hstat-label">Failure probability</span>
+                <span class="hstat-val red">91%</span>
+              </div>
+              <div class="hstat">
+                <span class="hstat-label">Estimated RUL</span>
+                <span class="hstat-val amber">~5 days</span>
+              </div>
+              <div class="hstat">
+                <span class="hstat-label">Failure type</span>
+                <span class="hstat-val amber">Bearing wear</span>
+              </div>
+              <div class="hstat">
+                <span class="hstat-label">Confidence</span>
+                <span class="hstat-val green">87%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Factory Assistant -->
+        <div class="ai-panel">
+          <div class="ai-head">
+            <div class="ai-icon">
+              <svg viewBox="0 0 14 14"><path d="M7 1C4 1 2 3 2 5.5c0 1.5.8 2.8 2 3.5v2l2-1h1c3 0 5-2 5-4.5C12 3 10 1 7 1z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="ai-title">Factory Assistant</div>
+              <div class="ai-subtitle">Ask anything about your machines</div>
+            </div>
+          </div>
+          <div class="ai-messages">
+            <div class="ai-msg">
+              <div class="ai-msg-who">Engineer</div>
+              <div class="ai-bubble user">Why is Motor-01 showing a critical health score?</div>
+            </div>
+            <div class="ai-msg">
+              <div class="ai-msg-who">TwinForge AI</div>
+              <div class="ai-bubble ai">
+                Motor-01 ke vibration readings pichhle <span class="ai-stat">7 days</span> mein continuously increase ho rahe hain — aaj <span class="ai-stat">7.4 mm/s</span> tak pahunch gaye, jo <span class="ai-highlight">42% zyada</span> hai last week se.<br><br>
+                Saath hi temperature bhi <span class="ai-stat">78°C</span> ho gaya hai. Ye dono trends mil kar <span class="ai-highlight">bearing wear pattern</span> indicate karte hain.<br><br>
+                Failure probability: <span class="ai-stat" style="color:var(--red);border-color:#ef444440">91%</span> · Estimated window: <span class="ai-stat">5 days</span>
+                <br><br>
+                <strong style="color:var(--text)">Recommendation:</strong> Inspect bearing immediately. Schedule maintenance before Friday production shift.
+              </div>
+            </div>
+          </div>
+          <div class="ai-input-row">
+            <input class="ai-input" type="text" placeholder="Ask about any machine..."/>
+            <button class="ai-send">Ask ↗</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const timeEl = document.querySelector('.topbar-time');
+  function tick() {
+    const now = new Date();
+    const d = now.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+    const t = now.toLocaleTimeString('en-GB',{hour12:false});
+    timeEl.textContent = d + ' · ' + t;
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
