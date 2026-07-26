@@ -1,0 +1,79 @@
+# ── Environment ──────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
+
+# ── Node / Frontend ──────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+dist/
+build/
+.vite/
+*.local
+
+# ── AI / ML ──────────────────────────────────────────────
+ai/models/*.pkl
+ai/models/*.h5
+ai/models/*.pt
+ai/models/*.onnx
+ai/datasets/*.csv
+ai/datasets/*.parquet
+*.ipynb_checkpoints/
+
+# ── Database ─────────────────────────────────────────────
+database/backups/*.sql
+database/backups/*.dump
+*.db
+*.sqlite3
+
+# ── Docker ───────────────────────────────────────────────
+.docker/
+
+# ── OS ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ── IDE ──────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Secrets ──────────────────────────────────────────────
+*.pem
+*.key
+*.cert
+*.p12
+secrets/

@@ -1,0 +1,62 @@
+/* TwinForge AI — Global Styles */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ─────────────────────────────────── */
+:root {
+  --bg-base: #0a0b0d;
+  --bg-surface: #111318;
+  --bg-surface-2: #181c23;
+  --bg-overlay: #1e2330;
+
+  --border-subtle: #1e2330;
+  --border-default: #2a3040;
+  --border-strong: #3a4255;
+
+  --text-primary: #e8eaf0;
+  --text-secondary: #8892a4;
+  --text-muted: #4a5568;
+
+  --color-healthy: #10b981;
+  --color-warning: #f59e0b;
+  --color-risk: #f97316;
+  --color-critical: #ef4444;
+  --color-accent: #3b82f6;
+  --color-ai: #8b5cf6;
+
+  --bg-healthy: #052e1c;
+  --bg-warning: #2d1f00;
+  --bg-critical: #2d0e0e;
+  --bg-accent: #1d3a6b;
+  --bg-ai: #1e1040;
+}
+
+/* ── Base ─────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ── Focus ───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

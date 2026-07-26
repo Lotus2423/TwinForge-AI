@@ -1,0 +1,131 @@
+# TwinForge AI — Docker Compose
+# Spins up: frontend, backend, postgres, pgadmin, mqtt broker
+
+version: "3.9"
+
+services:
+
+  # ── PostgreSQL Database ─────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: twinforge-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-twinforge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-twinforge_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-twinforge}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - twinforge-net
+
+  # ── FastAPI Backend ─────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: twinforge-backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-twinforge}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-twinforge_db}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - ./ai/models:/app/ai_models
+    networks:
+      - twinforge-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── React Frontend ──────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: twinforge-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+      VITE_WS_URL: ws://localhost:8000/ws
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - twinforge-net
+
+  # ── MQTT Broker (IoT) ───────────────────────────────────
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    container_name: twinforge-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./docker/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mqtt_data:/mosquitto/data
+    networks:
+      - twinforge-net
+
+  # ── pgAdmin (Database UI) ───────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: twinforge-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@twinforge.ai
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - twinforge-net
+    profiles:
+      - dev
+
+  # ── Nginx Reverse Proxy ─────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: twinforge-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - twinforge-net
+    profiles:
+      - production
+
+# ── Volumes ─────────────────────────────────────────────
+volumes:
+  postgres_data:
+  mqtt_data:
+
+# ── Networks ────────────────────────────────────────────
+networks:
+  twinforge-net:
+    driver: bridge
