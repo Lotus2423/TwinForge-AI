@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     MQTT_TOPIC_PREFIX: str = "twinforge"
 
     # ── CORS ─────────────────────────────────────────────
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
 
     class Config:
         env_file = ".env"

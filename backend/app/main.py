@@ -12,11 +12,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# These imports will be uncommented as modules are built:
-# from app.api.v1.router import api_v1_router
-# from app.api.ws.gateway import websocket_router
-# from app.core.config import settings
-# from app.database.connection import create_tables
+from app.api.v1.router import api_v1_router
+from app.api.ws.gateway import router as websocket_router
+from app.core.config import settings
 
 
 @asynccontextmanager
@@ -55,15 +53,15 @@ def create_application() -> FastAPI:
     # ── CORS ──────────────────────────────────────────────
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000"],  # Will use settings.ALLOWED_ORIGINS
+        allow_origins=settings.ALLOWED_ORIGINS,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
     # ── Routes ────────────────────────────────────────────
-    # app.include_router(api_v1_router, prefix="/api/v1")
-    # app.include_router(websocket_router)
+    app.include_router(api_v1_router, prefix="/api/v1")
+    app.include_router(websocket_router)
 
     # ── Health Check ──────────────────────────────────────
     @app.get("/health", tags=["Health"])
@@ -83,7 +81,7 @@ app = create_application()
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "main:app",
+        "app.main:app",
         host="0.0.0.0",
         port=8000,
         reload=True,

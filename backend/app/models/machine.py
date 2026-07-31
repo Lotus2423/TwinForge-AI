@@ -1,9 +1,10 @@
 """SQLAlchemy ORM model for Machine entity."""
-from sqlalchemy import Column, String, Boolean, Numeric, Integer, Date, ForeignKey
+from sqlalchemy import Column, String, Boolean, Numeric, Integer, Date, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.database.base import Base
 import uuid
+from sqlalchemy.sql import func
 
 class Machine(Base):
     __tablename__ = "machines"
@@ -22,6 +23,7 @@ class Machine(Base):
     location_bay    = Column(String(100))
     api_key         = Column(String(255), unique=True)
     is_active       = Column(Boolean, default=True)
+    created_at      = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     sensor_readings = relationship("SensorReading", back_populates="machine", cascade="all, delete")
     predictions     = relationship("Prediction", back_populates="machine", cascade="all, delete")
